@@ -1,0 +1,132 @@
+/* Base styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+h2, h3 {
+  margin-bottom: 1rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Player Info & Start Quiz Forms */
+#player-info-container, #start-quiz-container {
+  margin-bottom: 2rem;
+}
+
+form label {
+  margin-right: 0.5rem;
+}
+
+form input, form select {
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.6rem;
+  width: 80%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Score & Timer */
+#score-container, #timer-container {
+  margin-bottom: 1rem;
+}
+
+#score-bar-container, #timer-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#score-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #28a745;
+  transition: width 0.5s ease-in-out;
+}
+
+#timer-bar {
+  background-color: #ff6347;
+  width: 100%;
+  transition: width 1s linear;
+}
+
+/* Question & Answers */
+#answers-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.answer-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #007BFF;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.answer-btn.correct {
+  background-color: #28a745;
+  color: white;
+}
+
+.answer-btn.incorrect {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Results Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 50%;
+}
+
+.correct-answer { color: #28a745; }
+.incorrect-answer { color: #dc3545; }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  #answers-container { flex-direction: column; }
+  .modal-content { width: 90%; padding: 1rem; }
+  form input, form select, form button { width: 80%; }
+}

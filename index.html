@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trivia Quiz Game</title>
+  <link rel="stylesheet" href="css/quiz.css">
+</head>
+<body>
+
+  <!-- Player Info Form -->
+  <div id="player-info-container">
+    <h2>Enter Your Info</h2>
+    <form id="player-info-form">
+      <label for="player-name">Name:</label>
+      <input type="text" id="player-name" name="player-name" required minlength="2" placeholder="Your Name">
+
+      <label for="player-email">Email:</label>
+      <input type="email" id="player-email" name="player-email" required placeholder="you@example.com">
+
+      <button type="submit">Save Info</button>
+    </form>
+  </div>
+
+  <!-- Start Quiz Form -->
+  <div id="start-quiz-container" style="display:none;">
+    <h2>Start Your Quiz</h2>
+    <form id="start-quiz-form">
+      <label for="category-select">Category:</label>
+      <select id="category-select">
+        <option value="9">General Knowledge</option>
+        <option value="17">Science</option>
+        <option value="23">History</option>
+      </select>
+
+      <label for="difficulty-select">Difficulty:</label>
+      <select id="difficulty-select">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <button type="submit">Start Quiz</button>
+    </form>
+  </div>
+
+  <!-- Quiz Container -->
+  <div id="quiz-container" style="display:none;">
+    <div id="score-container">
+      <span id="score-text">Score: 0</span>
+      <div id="score-bar-container">
+        <div id="score-bar"></div>
+      </div>
+    </div>
+
+    <div id="timer-container">
+      <div id="timer-bar"></div>
+    </div>
+
+    <div id="question-container">
+      <h3 id="question"></h3>
+      <div id="answers-container"></div>
+    </div>
+
+    <button id="next-btn" disabled>Next Question</button>
+  </div>
+
+  <!-- Results Modal -->
+  <div id="results-modal" class="modal">
+    <div class="modal-content">
+      <span id="final-score"></span>
+      <div id="review-answers"></div>
+      <button id="restart-btn">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>

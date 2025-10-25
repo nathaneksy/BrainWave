@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrainWave Trivia - Quiz</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/quiz.css">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+</head>
+<body>
+  <header>
+    <h1>BrainWave Trivia</h1>
+  </header>
+
+  <main>
+    <div id="start-quiz-container">
+  <h2>Start Your Quiz</h2>
+  <div id="player-info-container">
+  <h2>Enter Your Info</h2>
+  <form id="player-info-form">
+    <label for="player-name">Name:</label>
+    <input type="text" id="player-name" name="player-name" required minlength="2" placeholder="Your Name">
+
+    <label for="player-email">Email:</label>
+    <input type="email" id="player-email" name="player-email" required placeholder="you@example.com">
+
+    <button type="submit">Save Info</button>
+  </form>
+</div>
+
+  <form id="start-quiz-form">
+    <label for="category-select">Category:</label>
+    <select id="category-select">
+      <option value="general">General Knowledge</option>
+      <option value="science">Science</option>
+      <option value="history">History</option>
+    </select>
+
+    <label for="difficulty-select">Difficulty:</label>
+    <select id="difficulty-select">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+
+    <button type="submit">Start Quiz</button>
+  </form>
+</div>
+
+<!-- Hide quiz container initially -->
+<div id="quiz-container" style="display:none;">
+  <!-- Existing quiz HTML goes here -->
+</div>
+
+    <section id="quiz-container">
+        <div id="timer-container">
+        <div id="timer-bar"></div>
+        <div id="quiz-badge">
+        <span id="category-badge"><i id="category-icon"></i></span>
+        <span id="difficulty-badge"><i id="difficulty-icon"></i></span>
+        <div id="score-container">
+        <span id="score-text">Score: 0</span>
+        <div id="score-bar-container">
+        <div id="score-bar"></div>
+        </div>
+
+      <div id="question-box">
+        <h2 id="question-text">Loading question...</h2>
+      </div>
+
+      <div id="answers-container">
+        <!-- Answer buttons will be dynamically added here -->
+      </div>
+
+      <button id="next-btn" disabled>Next Question</button>
+    </section>
+    <!-- Results Modal -->
+<!-- Results Modal -->
+<div id="results-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Quiz Finished!</h2>
+    <p id="final-score"></p>
+    
+    <div id="review-answers">
+      <!-- Correct/Incorrect answers will be displayed here -->
+    </div>
+
+    <button id="restart-btn">Play Again</button>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BrainWave Trivia</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script type="module" src="js/api.js"></script>
+  <script type="module" src="js/game.js"></script>
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>
