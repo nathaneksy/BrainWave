@@ -1,0 +1,18 @@
+[
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "What is the capital of France?",
+    "correct_answer": "Paris",
+    "incorrect_answers": ["London", "Berlin", "Rome"]
+  },
+  {
+    "category": "Science",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "What is H2O commonly known as?",
+    "correct_answer": "Water",
+    "incorrect_answers": ["Hydrogen", "Oxygen", "Salt"]
+  }
+]

@@ -1,0 +1,43 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#player-info-container, #start-quiz-container, #quiz-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+#answers-container button {
+  display: block;
+  margin: 10px 0;
+  transition: transform 0.2s;
+}
+
+#answers-container button:hover {
+  transform: scale(1.05);
+}
+
+#timer-bar, #score-bar {
+  height: 20px;
+  background-color: #4caf50;
+  margin-top: 10px;
+  transition: width 1s linear;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px black;
+}
+
+.modal.show {
+  display: block;
+}

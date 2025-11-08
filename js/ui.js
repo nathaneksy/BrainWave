@@ -1,24 +1,21 @@
-// js/game.js
 import { savePlayerData } from './storage.js';
 
-const form = document.getElementById('player-setup-form');
+const form = document.getElementById('player-info-form');
 
 form.addEventListener('submit', (e) => {
-  e.preventDefault(); // prevent page reload
+  e.preventDefault();
 
-  const playerName = document.getElementById('playerName').value.trim();
-  const category = document.getElementById('category').value;
-  const difficulty = document.getElementById('difficulty').value;
+  const playerName = document.getElementById('player-name').value.trim();
+  const category = document.getElementById('category-select').value;
+  const difficulty = document.getElementById('difficulty-select').value;
 
-  // Validate inputs
   if (!playerName || !category || !difficulty) {
     alert('Please fill out all fields!');
     return;
   }
 
-  // Save to local storage
   savePlayerData(playerName, category, difficulty);
 
-  // Redirect to quiz page with URL parameters
+  // Pass URL parameters to quiz page
   window.location.href = `quiz.html?category=${category}&difficulty=${difficulty}`;
 });

@@ -3,8 +3,17 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 1rem;
-  background-color: #f9f9f9;
+  background: linear-gradient(120deg, #89f7fe, #66a6ff);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   text-align: center;
+  color: #333;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 h2, h3 {
@@ -13,15 +22,38 @@ h2, h3 {
 
 button {
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 /* Player Info & Start Quiz Forms */
 #player-info-container, #start-quiz-container {
   margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
 form label {
   margin-right: 0.5rem;
+  font-weight: bold;
 }
 
 form input, form select {
@@ -37,9 +69,6 @@ form button {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
   background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
 }
 
 form button:hover {
@@ -53,40 +82,68 @@ form button:hover {
 
 #score-bar-container, #timer-bar {
   width: 100%;
-  height: 10px;
-  background-color: #ddd;
-  border-radius: 5px;
+  height: 12px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
 #score-bar {
   width: 0%;
-  height: 100%;
-  background-color: #28a745;
-  transition: width 0.5s ease-in-out;
+  background: linear-gradient(90deg, #28a745, #85e085);
+  transition: width 0.6s ease-in-out;
 }
 
 #timer-bar {
-  background-color: #ff6347;
+  background: linear-gradient(90deg, #ff6347, #ff8a65);
   width: 100%;
   transition: width 1s linear;
 }
 
+#timer-bar.active {
+  animation: timerPulse 1s infinite;
+}
+
+@keyframes timerPulse {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.2); }
+  100% { transform: scaleY(1); }
+}
+
 /* Question & Answers */
+#question-box {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.5s ease forwards;
+}
+
 #answers-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: 1rem;
 }
 
+/* Answer Buttons */
 .answer-btn {
   padding: 0.5rem 1rem;
   border: 1px solid #007BFF;
   border-radius: 5px;
   background-color: white;
+  color: #007BFF; /* Make text visible */
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
+.answer-btn:hover {
+  background-color: #007BFF;
+  color: white; /* Swap text color on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Correct / Incorrect Answers */
 .answer-btn.correct {
   background-color: #28a745;
   color: white;
@@ -95,6 +152,18 @@ form button:hover {
 .answer-btn.incorrect {
   background-color: #dc3545;
   color: white;
+}
+
+@keyframes correctFlash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes incorrectFlash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 /* Results Modal */
@@ -111,6 +180,12 @@ form button:hover {
 
 .modal.show {
   display: block;
+  animation: modalPop 0.5s ease forwards;
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .modal-content {
@@ -121,12 +196,28 @@ form button:hover {
   width: 50%;
 }
 
-.correct-answer { color: #28a745; }
-.incorrect-answer { color: #dc3545; }
+.correct-answer { color: #28a745; font-weight: bold; }
+.incorrect-answer { color: #dc3545; font-weight: bold; }
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   #answers-container { flex-direction: column; }
   .modal-content { width: 90%; padding: 1rem; }
   form input, form select, form button { width: 80%; }
+}
+
+/* Add spacing between answer buttons and Next button */
+#next-btn {
+  margin-top: 1.5rem; /* Increase space */
+  padding: 0.5rem 1rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#next-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }

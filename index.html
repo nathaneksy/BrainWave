@@ -9,70 +9,72 @@
 <body>
 
   <!-- Player Info Form -->
-  <div id="player-info-container">
-    <h2>Enter Your Info</h2>
-    <form id="player-info-form">
-      <label for="player-name">Name:</label>
-      <input type="text" id="player-name" name="player-name" required minlength="2" placeholder="Your Name">
+  <main>
+    <section id="player-info-container">
+      <h2>Enter Your Info</h2>
+      <form id="player-info-form" aria-label="Player Information Form">
+        <label for="player-name">Name:</label>
+        <input type="text" id="player-name" name="player-name" required minlength="2" placeholder="Your Name">
 
-      <label for="player-email">Email:</label>
-      <input type="email" id="player-email" name="player-email" required placeholder="you@example.com">
+        <label for="player-email">Email:</label>
+        <input type="email" id="player-email" name="player-email" required placeholder="you@example.com">
 
-      <button type="submit">Save Info</button>
-    </form>
-  </div>
+        <button type="submit">Save Info</button>
+      </form>
+    </section>
 
-  <!-- Start Quiz Form -->
-  <div id="start-quiz-container" style="display:none;">
-    <h2>Start Your Quiz</h2>
-    <form id="start-quiz-form">
-      <label for="category-select">Category:</label>
-      <select id="category-select">
-        <option value="9">General Knowledge</option>
-        <option value="17">Science</option>
-        <option value="23">History</option>
-      </select>
+    <!-- Start Quiz Form -->
+    <section id="start-quiz-container" style="display:none;">
+      <h2>Start Your Quiz</h2>
+      <form id="start-quiz-form" aria-label="Quiz Settings Form">
+        <label for="category-select">Category:</label>
+        <select id="category-select">
+          <option value="9">General Knowledge</option>
+          <option value="17">Science</option>
+          <option value="23">History</option>
+        </select>
 
-      <label for="difficulty-select">Difficulty:</label>
-      <select id="difficulty-select">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+        <label for="difficulty-select">Difficulty:</label>
+        <select id="difficulty-select">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
 
-      <button type="submit">Start Quiz</button>
-    </form>
-  </div>
+        <button type="submit">Start Quiz</button>
+      </form>
+    </section>
 
-  <!-- Quiz Container -->
-  <div id="quiz-container" style="display:none;">
-    <div id="score-container">
-      <span id="score-text">Score: 0</span>
-      <div id="score-bar-container">
-        <div id="score-bar"></div>
+    <!-- Quiz Container -->
+    <section id="quiz-container" style="display:none;">
+      <div id="score-container" aria-label="Score Information">
+        <span id="score-text">Score: 0</span>
+        <div id="score-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div id="score-bar"></div>
+        </div>
+      </div>
+
+      <div id="timer-container" aria-label="Timer">
+        <div id="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <div id="question-container">
+        <h3 id="question" aria-live="polite"></h3>
+        <div id="answers-container"></div>
+      </div>
+
+      <button id="next-btn" disabled>Next Question</button>
+    </section>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="final-score">
+      <div class="modal-content">
+        <span id="final-score"></span>
+        <div id="review-answers"></div>
+        <button id="restart-btn">Play Again</button>
       </div>
     </div>
-
-    <div id="timer-container">
-      <div id="timer-bar"></div>
-    </div>
-
-    <div id="question-container">
-      <h3 id="question"></h3>
-      <div id="answers-container"></div>
-    </div>
-
-    <button id="next-btn" disabled>Next Question</button>
-  </div>
-
-  <!-- Results Modal -->
-  <div id="results-modal" class="modal">
-    <div class="modal-content">
-      <span id="final-score"></span>
-      <div id="review-answers"></div>
-      <button id="restart-btn">Play Again</button>
-    </div>
-  </div>
+  </main>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>

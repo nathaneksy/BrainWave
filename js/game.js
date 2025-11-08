@@ -32,7 +32,7 @@ const QUESTION_TIME = 15;
 let category = '9';
 let difficulty = 'easy';
 
-// Player Info Form
+// ---------------- Player Info ----------------
 playerInfoForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const nameInput = document.getElementById('player-name').value.trim();
@@ -50,11 +50,12 @@ playerInfoForm.addEventListener('submit', (e) => {
   startQuizContainer.style.display = 'block';
 });
 
-// Start Quiz Form
+// ---------------- Start Quiz ----------------
 startQuizForm.addEventListener('submit', (e) => {
   e.preventDefault();
   category = categorySelect.value;
   difficulty = difficultySelect.value;
+  updateURLParams();
   startQuiz(category, difficulty);
 });
 
@@ -67,24 +68,34 @@ restartBtn.addEventListener('click', () => {
   scoreText.textContent = `Score: 0`;
   scoreBar.style.width = `0%`;
   displayQuestion();
+  saveProgress();
 });
 
-// Start Quiz Function
-async function startQuiz(category, difficulty) {
+// ---------------- Quiz Functions ----------------
+async function startQuiz(cat, diff) {
   startQuizContainer.style.display = 'none';
   quizContainer.style.display = 'block';
-  questions = await fetchQuestions(category, difficulty);
+  getParamsFromURL();
+
+  questions = await fetchQuestions(cat, diff);
   if (!questions || questions.length === 0) {
     alert('No questions loaded. Check API or local JSON.');
     return;
   }
+
+  if (!loadProgress()) {
+    currentQuestionIndex = 0;
+    score = 0;
+    userAnswers = [];
+  }
+
   displayQuestion();
 }
 
 // Fetch Questions from API or local JSON fallback
-async function fetchQuestions(category, difficulty) {
+async function fetchQuestions(cat, diff) {
   try {
-    const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}&type=multiple`);
+    const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${cat}&difficulty=${diff}&type=multiple`);
     const data = await response.json();
     if (!data.results || data.results.length === 0) throw new Error('API empty');
     return data.results;
@@ -102,6 +113,7 @@ function displayQuestion() {
 
   const q = questions[currentQuestionIndex];
   questionEl.textContent = decodeHTML(q.question);
+  questionEl.setAttribute('aria-live', 'polite');
 
   const answers = [...q.incorrect_answers.map(a => decodeHTML(a)), decodeHTML(q.correct_answer)];
   shuffleArray(answers);
@@ -111,6 +123,7 @@ function displayQuestion() {
     const btn = document.createElement('button');
     btn.textContent = ans;
     btn.className = 'answer-btn';
+    btn.setAttribute('tabindex', '0');
     btn.addEventListener('click', () => selectAnswer(btn, q.correct_answer));
     answersContainer.appendChild(btn);
   });
@@ -118,7 +131,7 @@ function displayQuestion() {
   startTimer();
 }
 
-// Timer
+// ---------------- Timer ----------------
 function startTimer() {
   let timeLeft = QUESTION_TIME;
   timerBar.style.width = '100%';
@@ -129,6 +142,7 @@ function startTimer() {
       clearInterval(timerInterval);
       disableAnswers();
       nextBtn.disabled = false;
+      saveProgress();
     }
   }, 1000);
 }
@@ -137,10 +151,11 @@ function disableAnswers() {
   document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
 }
 
-// Select Answer
+// ---------------- Select Answer ----------------
 function selectAnswer(btn, correctAnswer) {
   clearInterval(timerInterval);
   disableAnswers();
+
   if (btn.textContent === decodeHTML(correctAnswer)) {
     btn.classList.add('correct');
     score++;
@@ -149,27 +164,33 @@ function selectAnswer(btn, correctAnswer) {
     btn.classList.add('incorrect');
     incorrectSound.play();
   }
+
   scoreText.textContent = `Score: ${score}`;
   scoreBar.style.width = `${(score / questions.length) * 100}%`;
+
   userAnswers.push({ question: questionEl.textContent, selected: btn.textContent, correct: decodeHTML(correctAnswer) });
+
   nextBtn.disabled = false;
+  saveProgress();
 }
 
-// Next Question
+// ---------------- Next Question ----------------
 nextBtn.addEventListener('click', () => {
   currentQuestionIndex++;
   if (currentQuestionIndex >= questions.length) {
     showResults();
+    localStorage.removeItem('quizProgress'); // clear progress on completion
   } else {
     displayQuestion();
   }
 });
 
-// Show Results
+// ---------------- Show Results ----------------
 function showResults() {
   quizContainer.style.display = 'none';
   resultsModal.classList.add('show');
   finalScore.textContent = `${playerName}, your final score is ${score} out of ${questions.length}`;
+
   reviewContainer.innerHTML = '';
   userAnswers.forEach(a => {
     const div = document.createElement('div');
@@ -178,10 +199,11 @@ function showResults() {
                      <strong>Correct:</strong> ${a.correct}`;
     reviewContainer.appendChild(div);
   });
+
   confetti({ particleCount: 150, spread: 70 });
 }
 
-// Helpers
+// ---------------- Helpers ----------------
 function decodeHTML(html) {
   const txt = document.createElement('textarea');
   txt.innerHTML = html;
@@ -194,3 +216,61 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+
+// ---------------- Local Storage ----------------
+function saveProgress() {
+  localStorage.setItem('quizProgress', JSON.stringify({
+    currentQuestionIndex,
+    score,
+    userAnswers,
+    category,
+    difficulty
+  }));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem('quizProgress');
+  if (saved) {
+    const data = JSON.parse(saved);
+    currentQuestionIndex = data.currentQuestionIndex;
+    score = data.score;
+    userAnswers = data.userAnswers;
+    category = data.category;
+    difficulty = data.difficulty;
+    scoreText.textContent = `Score: ${score}`;
+    scoreBar.style.width = `${(score / questions.length) * 100}%`;
+    return true;
+  }
+  return false;
+}
+
+// ---------------- URL Parameters ----------------
+function updateURLParams() {
+  const params = new URLSearchParams();
+  params.set('category', category);
+  params.set('difficulty', difficulty);
+  window.history.replaceState({}, '', `${location.pathname}?${params}`);
+}
+
+function getParamsFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('category');
+  const diff = params.get('difficulty');
+  if (cat) category = cat;
+  if (diff) difficulty = diff;
+}
+
+// ---------------- On Page Load ----------------
+window.addEventListener('DOMContentLoaded', () => {
+  // Load saved player info if available
+  const savedName = localStorage.getItem('playerName');
+  const savedEmail = localStorage.getItem('playerEmail');
+  if (savedName && savedEmail) {
+    playerName = savedName;
+    playerEmail = savedEmail;
+    playerInfoContainer.style.display = 'none';
+    startQuizContainer.style.display = 'block';
+  }
+
+  getParamsFromURL();
+});
