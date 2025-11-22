@@ -1,223 +1,281 @@
-/* Base styling */
+/* =========================================================
+   GLOBAL STYLES & THEME
+========================================================= */
+
+:root {
+  --blue-light: #8ec5ff;
+  --blue-mid: #5aa6ff;
+  --blue-dark: #1e63c3;
+  --orange: #ff6b4a;
+  --green: #4cd964;
+  --red: #ff4f4f;
+  --purple: #a674ff;
+
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+
+  --transition: 0.25s ease-in-out;
+}
+
+/* Background gradient */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--blue-light), var(--blue-mid));
   margin: 0;
-  padding: 1rem;
-  background: linear-gradient(120deg, #89f7fe, #66a6ff);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+  padding: 0;
+  color: #222;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Center content */
+main {
+  width: 100%;
+  max-width: 900px;
+  padding: 20px;
+}
+
+/* =========================================================
+   HEADERS & TITLES
+========================================================= */
+
+h2 {
   text-align: center;
-  color: #333;
+  color: var(--blue-dark);
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.15);
+  font-size: 2rem;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
 }
 
-h2, h3 {
-  margin-bottom: 1rem;
+/* =========================================================
+   FORM CARD STYLING
+========================================================= */
+
+section {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 25px;
+  animation: popIn 0.45s ease-in-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin: 12px 0 5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--blue-mid);
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+input:focus,
+select:focus {
+  border-color: var(--orange);
+  outline: none;
+  box-shadow: 0 0 8px var(--orange);
 }
 
 button {
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  margin-top: 18px;
+  padding: 12px 22px;
+  font-size: 1.1rem;
   border: none;
+  background: var(--orange);
   color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
   font-weight: bold;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
 }
 
 button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transform: scale(1.05);
+  background: #ff8268;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
 }
 
-/* Player Info & Start Quiz Forms */
-#player-info-container, #start-quiz-container {
-  margin-bottom: 2rem;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
-  border-radius: 12px;
-  display: inline-block;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  animation: fadeInUp 0.5s ease forwards;
+/* Disabled buttons look dim */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-@keyframes fadeInUp {
-  0% { transform: translateY(20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+/* =========================================================
+   QUIZ QUESTION & ANSWERS
+========================================================= */
+
+#question-container {
+  margin-top: 20px;
 }
 
-form label {
-  margin-right: 0.5rem;
-  font-weight: bold;
-}
-
-form input, form select {
-  margin: 0.5rem 0;
-  padding: 0.4rem 0.6rem;
-  width: 80%;
-  max-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-form button {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #007BFF;
-}
-
-form button:hover {
-  background-color: #0056b3;
-}
-
-/* Score & Timer */
-#score-container, #timer-container {
-  margin-bottom: 1rem;
-}
-
-#score-bar-container, #timer-bar {
-  width: 100%;
-  height: 12px;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-#score-bar {
-  width: 0%;
-  background: linear-gradient(90deg, #28a745, #85e085);
-  transition: width 0.6s ease-in-out;
-}
-
-#timer-bar {
-  background: linear-gradient(90deg, #ff6347, #ff8a65);
-  width: 100%;
-  transition: width 1s linear;
-}
-
-#timer-bar.active {
-  animation: timerPulse 1s infinite;
-}
-
-@keyframes timerPulse {
-  0% { transform: scaleY(1); }
-  50% { transform: scaleY(1.2); }
-  100% { transform: scaleY(1); }
-}
-
-/* Question & Answers */
-#question-box {
-  background: rgba(255, 255, 255, 0.85);
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  animation: fadeInUp 0.5s ease forwards;
+#question {
+  font-size: 1.7rem;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
 }
 
 #answers-container {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-/* Answer Buttons */
 .answer-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #007BFF;
-  border-radius: 5px;
-  background-color: white;
-  color: #007BFF; /* Make text visible */
-  font-weight: bold;
-  transition: background-color 0.3s, transform 0.2s;
+  background: #fff;
+  color: #000 !important;  /* ← Fixes visibility */
+  border: 2px solid #000;
+  font-weight: 600;
+  padding: 15px;
+  font-size: 1.2rem;
+  background: white;
+  border: 2px solid var(--blue-mid);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--card-shadow);
 }
 
 .answer-btn:hover {
-  background-color: #007BFF;
-  color: white; /* Swap text color on hover */
-  transform: scale(1.05); /* Slight zoom effect */
+  transform: scale(1.03);
+  border-color: var(--purple);
+  background: #f5eeff;
 }
 
-/* Correct / Incorrect Answers */
-.answer-btn.correct {
-  background-color: #28a745;
+/* Correct / incorrect answer colors */
+.correct {
+  background: var(--green) !important;
   color: white;
+  border-color: var(--green) !important;
 }
 
-.answer-btn.incorrect {
-  background-color: #dc3545;
+.incorrect {
+  background: var(--red) !important;
   color: white;
+  border-color: var(--red) !important;
 }
 
-@keyframes correctFlash {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+/* =========================================================
+   SPACING FIX FOR NEXT BUTTON
+========================================================= */
+
+#next-btn {
+  display: block;
+  margin: 35px auto 10px auto;
 }
 
-@keyframes incorrectFlash {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+/* =========================================================
+   SCORE BAR
+========================================================= */
+
+#score-container {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
-/* Results Modal */
+#score-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+#score-bar-container {
+  width: 100%;
+  height: 15px;
+  background: #d1e6ff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+#score-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--green);
+  transition: width 0.4s ease-in-out;
+}
+
+/* =========================================================
+   TIMER BAR
+========================================================= */
+
+#timer-container {
+  width: 100%;
+  height: 15px;
+  background: #ffe0d6;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+#timer-bar {
+  background: var(--orange);
+  height: 100%;
+  width: 100%;
+  transition: width linear;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
 .modal {
-  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
-}
-
-.modal.show {
-  display: block;
-  animation: modalPop 0.5s ease forwards;
-}
-
-@keyframes modalPop {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 2rem;
-  border-radius: 10px;
-  width: 50%;
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  padding: 25px;
+  border-radius: 20px;
+  animation: popIn 0.4s ease-in-out;
+  text-align: center;
+  max-height: 80vh;       /* prevent oversized modal */
+  overflow-y: auto;       /* allows scrolling */
+  padding-right: 1rem;    /* room for scrollbar */
 }
 
-.correct-answer { color: #28a745; font-weight: bold; }
-.incorrect-answer { color: #dc3545; font-weight: bold; }
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  #answers-container { flex-direction: column; }
-  .modal-content { width: 90%; padding: 1rem; }
-  form input, form select, form button { width: 80%; }
-}
+@media (max-width: 600px) {
+  #question {
+    font-size: 1.4rem;
+  }
 
-/* Add spacing between answer buttons and Next button */
-#next-btn {
-  margin-top: 1.5rem; /* Increase space */
-  padding: 0.5rem 1rem;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.2s;
-}
+  .answer-btn {
+    font-size: 1rem;
+  }
 
-#next-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+  button {
+    width: 100%;
+  }
 }

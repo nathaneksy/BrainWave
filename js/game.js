@@ -61,15 +61,26 @@ startQuizForm.addEventListener('submit', (e) => {
 
 // Restart Quiz
 restartBtn.addEventListener('click', () => {
+  // Hide results modal
+  resultsModal.style.display = 'none';
   resultsModal.classList.remove('show');
+
+  // Clear quiz state
+  localStorage.removeItem('quizProgress');
   currentQuestionIndex = 0;
   score = 0;
   userAnswers = [];
+
+  // Reset UI
   scoreText.textContent = `Score: 0`;
   scoreBar.style.width = `0%`;
-  displayQuestion();
-  saveProgress();
+
+  // Hide quiz, show category/difficulty screen
+  quizContainer.style.display = 'none';
+  startQuizContainer.style.display = 'block';
 });
+
+
 
 // ---------------- Quiz Functions ----------------
 async function startQuiz(cat, diff) {
@@ -126,6 +137,10 @@ function displayQuestion() {
     btn.setAttribute('tabindex', '0');
     btn.addEventListener('click', () => selectAnswer(btn, q.correct_answer));
     answersContainer.appendChild(btn);
+
+    document.getElementById('question-counter').textContent =
+  `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+
   });
 
   startTimer();
@@ -187,21 +202,34 @@ nextBtn.addEventListener('click', () => {
 
 // ---------------- Show Results ----------------
 function showResults() {
+  // Hide quiz
   quizContainer.style.display = 'none';
+
+  // Make modal visible (fixes hidden results problem)
+  resultsModal.style.display = 'flex'; 
   resultsModal.classList.add('show');
+
+  // Insert score text
   finalScore.textContent = `${playerName}, your final score is ${score} out of ${questions.length}`;
 
+  // Build review list
   reviewContainer.innerHTML = '';
   userAnswers.forEach(a => {
     const div = document.createElement('div');
-    div.innerHTML = `<strong>Q:</strong> ${a.question} <br>
-                     <strong>Your answer:</strong> <span class="${a.selected===a.correct?'correct-answer':'incorrect-answer'}">${a.selected}</span> <br>
-                     <strong>Correct:</strong> ${a.correct}`;
+    div.innerHTML = `
+      <strong>Q:</strong> ${a.question} <br>
+      <strong>Your answer:</strong>
+        <span class="${a.selected === a.correct ? 'correct-answer' : 'incorrect-answer'}">${a.selected}</span><br>
+      <strong>Correct:</strong> ${a.correct}
+      <hr>
+    `;
     reviewContainer.appendChild(div);
   });
 
+  // Fire confetti
   confetti({ particleCount: 150, spread: 70 });
 }
+
 
 // ---------------- Helpers ----------------
 function decodeHTML(html) {
